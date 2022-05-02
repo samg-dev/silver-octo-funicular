@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, jsonify, redirect, url_fo
 
 views = Blueprint(__name__, "views")
 
-@views.route("/")
+@views.route("/Home")
 def home():
     return render_template("index.html", name="Sam")
 
@@ -14,9 +14,18 @@ def sfx():
 def gifs():
     return render_template("gifs.html")
 
-# @views.route("/profile")
-# def profile():
-#     return render_template("profile.html")
+@views.route("/login", methods=["POST", "GET"])
+def login():
+    if request.method == "POST":
+        name = request.form["name"]
+        return redirect(url_for("views.profile", name=name))
+    else:
+        return render_template("login.html")
+
+@views.route("/profile")
+def profile():
+    name = request.args.get("name")
+    return render_template("profile.html", name=name)
 
 # @views.route("/json")
 # def get_json():
